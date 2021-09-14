@@ -1,0 +1,15 @@
+spring:
+  mvc:
+    view:
+      prefix: /WEB-INF/jsp/
+      suffix: .jsp
+    static-path-pattern: /static/**
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/your_recipe?serverTimezone=UTC&characterEncoding=UTF-8
+    username: root
+    password: wndyd7538
+    
+logging:
+  level:
+    root: info
