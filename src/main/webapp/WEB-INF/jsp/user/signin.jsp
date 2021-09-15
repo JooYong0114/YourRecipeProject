@@ -21,11 +21,13 @@
 					<b>너의 레시피는.</b>
 				</h1>
 				<h2 class="mt-5"><b>로그인</b></h2>
+				<form method="post" action="/user/sign_in">
 				<div>
 					<input type="text" id="idInput" class="form-control mt-5 mb-2" name="loginId" placeholder="아이디" style="width:500px; height:60px">
 					<input type="password" id="passwordInput" class="form-control mb-2" name="password" placeholder="비밀번호" style="width:500px; height:60px">
 					<button type="submit" id="loginBtn" class="btn btn-success my-5 w-100" style="width:100px; height:60px"><b>로그인</b></button>
 				</div>
+				</form>
 				<div class="w-100 mb-4 d-flex justify-content-around align-items-center">
 					<div><b>회원이 아니신가요?</b></div>
 					<a href="/user/signup_view" class="btn btn-primary"><b>회원가입</b></a>
@@ -49,6 +51,25 @@
 					alert("비밀번호를 입력하세요.");
 					return;
 				}
+				
+				$.ajax({
+					type:"post",
+					url:"/user/sign_in",
+					data:{"loginId":id, "password":password},
+					success:function(data) {
+						if(data.result == "success") {
+							alert("로그인 성공!");
+							location.href="/recipe/main_view";
+						}
+						else {
+							alert("아이디 또는 비밀번호를 확인하세요.");
+							location.reload();
+						}
+					},
+					error:function(e) {
+						alert("ajax error");
+					}
+				})
 			});
 		});
 	</script>

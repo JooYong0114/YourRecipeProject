@@ -28,8 +28,8 @@
 							<button type="button" id="idDuplicateConfirmBtn" class="btn btn-success" style="height:60px">중복확인</button>
 						</div>
 					</div>
-					<div class="text-success mb-2 d-none">사용가능한 아이디 입니다.</div>
-					<div class="text-danger mb-2 d-none">중복된 아이디 입니다.</div>
+					<div id="availableId" class="text-success mb-2 d-none">사용가능한 아이디 입니다.</div>
+					<div id="duplicatedId" class="text-danger mb-2 d-none">중복된 아이디 입니다.</div>
 					<input type="password" id="passwordInput" class="form-control mb-2" name="password" placeholder="비밀번호" style="height:60px">
 					<div class="input-group mb-2">
 						<input type="password" id="passwordComfirmInput" class="form-control" placeholder="비밀번호 확인" style="height:60px">
@@ -42,11 +42,11 @@
 					<div class="input-group mb-2">
 						<input type="text" id="nicknameInput" class="form-control" name="nickname" placeholder="닉네임" style="height:60px">
 						<div class="input-group-append">
-							<button type="button" class="btn btn-success" style="height:60px">중복확인</button>
+							<button type="button" id="nicknameDuplicateConfirmBtn" class="btn btn-success" style="height:60px">중복확인</button>
 						</div>
 					</div>
-					<div class="text-success mb-2 d-none">사용가능한 닉네임 입니다.</div>
-					<div class="text-danger mb-2 d-none">중복된 닉네임 입니다.</div>
+					<div id="availableNickname" class="text-success mb-2 d-none">사용가능한 닉네임 입니다.</div>
+					<div id="duplicatedNickname" class="text-danger mb-2 d-none">중복된 닉네임 입니다.</div>
 					<input type="text" id="emailInput" class="form-control mb-2" name="email" placeholder="이메일" style="width:500px; height:60px">
 					<button type="submit" id="signupBtn" class="btn btn-success my-5 w-100" style="width:500px; height:60px"><b>가입하기</b></button>
 				</div>
@@ -61,7 +61,31 @@
 	<script>
 		$(document).ready(function() {
 			$("#idDuplicateConfirmBtn").on("click", function() {
-				var loginId = $("#idDuplicateConfirmBtn").val();
+				var loginId = $("#idInput").val();
+				
+				if(loginId == null || loginId == "") {
+					alert("아이디를 입력하세요.");
+					return;
+				}
+				
+				$.ajax({
+					type:"get",
+					url:"/user/id_duplicate_check",
+					data:{"loginId":loginId},
+					success:function(data) {
+						if(data.result == true) {
+							$("#availableId").addClass("d-none");
+							$("#duplicatedId").removeClass("d-none");
+						}
+						else {
+							$("#availableId").removeClass("d-none");
+							$("#duplicatedId").addClass("d-none");
+						}
+					},
+					error:function(e) {
+						alert("ajax error");
+					}
+				});
 			});
 			
 			$("#passwordComfirmBtn").on("click", function() {
@@ -82,6 +106,34 @@
 					$("#correspondPassword").addClass("d-none");
 					$("#differentPassword").removeClass("d-none");
 				}
+			});
+			
+			$("#nicknameDuplicateConfirmBtn").on("click", function() {
+				var nickname = $("#nicknameInput").val();
+				
+				if(nickname == null || nickname == "") {
+					alert("닉네임을 입력하세요.");
+					return;
+				}
+				
+				$.ajax({
+					type:"get",
+					url:"/user/nickname_duplicate_check",
+					data:{"nickname":nickname},
+					success:function(data) {
+						if(data.result == true) {
+							$("#availableNickname").addClass("d-none");
+							$("#duplicatedNickname").removeClass("d-none");
+						}
+						else {
+							$("#availableNickname").removeClass("d-none");
+							$("#duplicatedNickname").addClass("d-none");
+						}
+					},
+					error:function(e) {
+						alert("ajax error");
+					}
+				});
 			});
 			
 			$("#signupBtn").on("click", function(event) {
