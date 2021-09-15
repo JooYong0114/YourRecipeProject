@@ -25,6 +25,7 @@
  			, now()
  		)
  	</insert>
+ 	
  	<select id="selectUser" parameterType="map" resultType="com.allured.yourRecipe.user.model.User">
  		SELECT
  			`id` 
@@ -40,5 +41,23 @@
  		WHERE
  			`loginId` = #{loginId}
  		AND `password` = #{password}
+ 	</select>
+ 	
+ 	<select id="selectUserById" parameterType="String" resultType="int">
+ 		SELECT
+ 			COUNT(1)
+ 		FROM
+ 			`user`
+ 		WHERE
+ 			`loginId` = #{loginId}
+ 	</select>
+ 	
+ 	<select id="selectUserByNickname" parameterType="String" resultType="int">
+ 		SELECT
+ 			COUNT(1)
+ 		FROM
+ 			`user`
+ 		WHERE
+ 			`nickname` = #{nickname}
  	</select>
  </mapper>

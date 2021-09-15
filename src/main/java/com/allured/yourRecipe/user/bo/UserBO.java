@@ -17,7 +17,26 @@ public class UserBO {
 		return userDAO.insertUser(loginId, encryptPassword, nickname, email);
 	}
 	
-	public User getUser(String loginId, String password) {
-		return userDAO.selectUser(loginId, password);
+	public User loginUser(String loginId, String password) {
+		String encryptPassword = EncryptUtils.md5(password);
+		return userDAO.selectUser(loginId, encryptPassword);
+	}
+	
+	public boolean idDuplicateCheck(String loginId) {
+		if(userDAO.selectUserById(loginId) == 0) {
+			return false;
+		}
+		else {
+			return true;
+		}
+	}
+	
+	public boolean nicknameDuplicateCheck(String nickname) {
+		if(userDAO.selectUserByNickname(nickname) == 0) {
+			return false;
+		}
+		else {
+			return true;
+		}
 	}
 }
